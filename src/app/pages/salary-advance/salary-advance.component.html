@@ -1,0 +1,136 @@
+<div class="row bg-light bg-gradient p-5">
+    <div [ngClass]="addAdvance||  editAdvance == true ? 'col-8' : 'col-12'">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <div class="row">
+                    <div class="col-md-6 text-white fw-bold fs-4">Advance Salary Portal</div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-sm btn-warning" (click)=" addAdvance= ! addAdvance">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-active">
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Name</th>
+                            <th>ContactNo</th>
+                            <th>Advance Date</th>
+                            <th>Advance Amount</th>
+                            <th>Reason</th>
+  
+  
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let advance of advanceArray; let sr=index">
+                            <td>{{sr+1}}</td>
+                            <td>{{advance.empName}}</td>
+                            <td>{{advance.empContactNo}}</td>
+                            <td>{{advance.advanceDate |date:'dd-MM-yyyy'}}</td>
+                            <td>{{advance.advanceAmount}}</td>
+                            <td>{{advance.reason}}</td>
+                            <td class="text-center">
+  
+                                <button class="btn btn-secondary btn-sm" (click)="editRecord(advance)">
+                                    Edit</button>
+                                <button class="btn btn-danger btn-sm mx-2"
+                                    (click)="onDelete(advance.advanceId)">Delete</button>
+  
+  
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- <tbody *ngIf="isLoader==true">
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <div class="spinner-border text-muted"></div>
+                                <div class="spinner-border text-primary"></div>
+                                <div class="spinner-border text-success"></div>
+                                <div class="spinner-border text-info"></div>
+                                <div class="spinner-border text-warning"></div>
+                                <div class="spinner-border text-danger"></div>
+                                <div class="spinner-border text-secondary"></div>
+                                <div class="spinner-border text-dark"></div>
+                                <div class="spinner-border text-light"></div>
+  
+                            </td>
+                        </tr>
+                    </tbody> -->
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 bg-light bg-gradient" *ngIf="addAdvance|| editAdvance == true">
+        <!-- <div class="row"> -->
+        <form #clientForm="ngForm">
+            <div class="card">
+                <div class="card-header bg-dark">
+                    <div class="row">
+                        <div class="col-md-6 fs-4 text-light fw-bold">New Advance</div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-sm btn-danger" (click)=" addAdvance= !addAdvance">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="text-secondary  fw-bold p-2">Emp Name</label>
+                                <select name="employeeId" class="form-control" [(ngModel)]="advanceObj.employeeId">
+  
+                                    <option *ngFor="let items of  employeeArrays" [value]="items.empId">
+                                        {{items.empName}}
+                                    </option>
+                                    <!-- <option value=""[(ngModel)]="clientObj.clientName">{{clientObj.clientName}}</option> -->
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="text-secondary  fw-bold p-2">Date</label>
+                                <input type="date" name="advanceDate" [(ngModel)]="advanceObj.advanceDate"
+                                    class="form-control" placeholder="advanceDate">
+                            </div>
+                            <div class="col-6 ">
+                                <label for="" class="text-secondary  fw-bold p-2">Amount</label>
+                                <input type="text" name="advanceAmount" [(ngModel)]="advanceObj.advanceAmount"
+                                    class="form-control" placeholder="advanceAmount">
+  
+                            </div>
+  
+  
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Reason</label>
+                            <textarea name="reason" rows="3" [(ngModel)]="advanceObj.reason"></textarea>
+  
+                        </div>
+                        <div class="row text-centre p-2">
+                            <div class="col-6">
+                                <button class="btn btn-sm btn-danger" (click)="resetAdvance()">Reset</button>
+                            </div>
+  
+                            <div class="col-6">
+                                <button class="btn btn-sm btn-success" *ngIf="advanceObj.advanceId==0"
+                                    (click)="createAdvance()">
+  
+                                    Save
+                                </button>
+                                <button class="btn btn-sm btn-warning" *ngIf="advanceObj.advanceId!==0"
+                                    (click)="updateAdvance()">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>

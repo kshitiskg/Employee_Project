@@ -1,0 +1,143 @@
+<div class="row bg-light bg-gradient p-5">
+    <div [ngClass]="addLeave || editLeave == true ? 'col-8' : 'col-12'">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <div class="row">
+                    <div class="col-md-6 text-white fw-bold fs-4">All Employees Leaves</div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-sm btn-warning" (click)=" addLeave = ! editLeave">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-active">
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Name</th>
+                            <th>Reason</th>
+                            <th>Full Leaves</th>
+                            <th>Half Leaves</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let leave of leaveArray; let sr=index">
+                            <td>{{sr+1}}</td>
+                            <td>{{leave.empName}}</td>
+                            <td>{{leave.leaveReason}}</td>
+                            <td>{{leave.noOfFullDayLeaves}}</td>
+                            <td>{{leave.noOfHalfDayLeaves}}</td>
+
+                            <td>{{leave.leaveDate | date :'dd-MM-yyyy'}}</td>
+                            <td class="text-center">
+
+                                <button class="btn btn-secondary btn-sm" (click)="editRecord(leave)">
+                                    Edit</button>
+                                <button class="btn btn-danger btn-sm mx-2"
+                                    (click)="onDelete(leave.leaveId)">Delete</button>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- <tbody *ngIf="isLoader==true">
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <div class="spinner-border text-muted"></div>
+                                <div class="spinner-border text-primary"></div>
+                                <div class="spinner-border text-success"></div>
+                                <div class="spinner-border text-info"></div>
+                                <div class="spinner-border text-warning"></div>
+                                <div class="spinner-border text-danger"></div>
+                                <div class="spinner-border text-secondary"></div>
+                                <div class="spinner-border text-dark"></div>
+                                <div class="spinner-border text-light"></div>
+
+                            </td>
+                        </tr>
+                    </tbody> -->
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 bg-light bg-gradient" *ngIf="addLeave || editLeave == true">
+        <!-- <div class="row"> -->
+        <form #employee="ngForm">
+            <div class="card">
+                <div class="card-header bg-dark">
+                    <div class="row">
+                        <div class="col-md-6 fs-4 text-light fw-bold"> Employees Leave</div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-sm btn-danger" (click)=" addLeave = !editLeave">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Name</label>
+                            <select class="form-control" name="empid" [(ngModel)]="leaveObj.employeeId">
+                                <option>Select Name</option>
+                                <option [value]="emp.empId"  *ngFor="let emp of employeeArray">{{emp.empName}}</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Date</label>
+                            <input type="date" name="leaveDate" [(ngModel)]="leaveObj.leaveDate" class="form-control"
+                                required>
+
+                        </div>
+                        <div class="col-6 ">
+                            <label for="" class="text-secondary  fw-bold p-2">Full leaves</label>
+                            <input type="text" name="fullLeaves" 
+                                [(ngModel)]="leaveObj.noOfFullDayLeaves" class="form-control"
+                                placeholder=" Enter Full Leaves" required>
+
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Half Leaves</label>
+                            <input type="text" name="halfleaves" [(ngModel)]="leaveObj.noOfHalfDayLeaves"
+                                class="form-control"  required>
+
+                        </div>
+
+                        <label for="" class="text-secondary  fw-bold p-2">leave Reason</label>
+                        <input type="text" name="leaveReason" [(ngModel)]="leaveObj.leaveReason" class="form-control"
+                            placeholder="Enter Reason">
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="row text-centre p-2">
+                    <div class="col-6">
+                        <button class="btn btn-sm btn-danger" (click)="resetLeave()">Reset</button>
+                    </div>
+
+                    <div class="col-6">
+                        <button class="btn btn-sm btn-success" *ngIf="leaveObj.leaveId == 0" (click)="createLeave()">Save
+                        </button>
+                        <button class="btn btn-sm btn-warning" *ngIf=" leaveObj.leaveId !== 0" (click)="updateLeave()">
+                            Update
+                        </button>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </form>
+    </div>
+
+</div>

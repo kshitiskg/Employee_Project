@@ -1,0 +1,157 @@
+<div class="container-fluid">
+    <div class="row bg-light mt-2">
+        <div [ngClass]="addSalary||  editSalary == true ? 'col-8' : 'col-12'">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <div class="row">
+                        <div class="col-md-6 text-white fw-bold fs-5">Salary Portal</div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn border-0" (click)="addSalary= ! addSalary">
+                                <i class="fa-solid fa-plus fs-4" style="color: #fcfcfc;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-active">
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Name</th>
+                                <th>Contact No</th>
+                                <th>Date</th>
+                                <th>Advance Salary</th>
+                                <th>present Days</th>
+                                <th>Total Salary</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let salary of salaryArray; let sr=index">
+                                <td>{{sr+1}}</td>
+                                <td>{{salary.empName}}</td>
+                                <td>{{salary.empContactNo}}</td>
+                                <td>{{salary.salaryDate |date:'dd-mm-yyyy'}}</td>
+                                <td>{{salary.totalAdvance}}</td>
+                                <td>{{salary.presentDays}}</td>
+                                <td>{{salary.salaryAmount}}</td>
+                                <td class="text-center d-flex">
+
+                                    <button class="btn border-0" (click)="editRecord(salary)">
+                                        <i class="fa-regular fa-pen-to-square" style="color: #406df2;"></i></button>
+                                    <button class="btn border-0 " (click)="onDelete(salary.salaryId)"><i
+                                            class="fa-solid fa-trash" style="color: #f01c05;"></i></button>
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="isLoader==true">
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <div class="spinner-border text-muted"></div>
+                                    <div class="spinner-border text-primary"></div>
+                                    <div class="spinner-border text-success"></div>
+                                    <div class="spinner-border text-info"></div>
+                                    <div class="spinner-border text-warning"></div>
+                                    <div class="spinner-border text-danger"></div>
+                                    <div class="spinner-border text-secondary"></div>
+                                    <div class="spinner-border text-dark"></div>
+                                    <div class="spinner-border text-light"></div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 bg-light bg-gradient" *ngIf="addSalary|| editSalary == true">
+            <!-- <div class="row"> -->
+            <form>
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <div class="row">
+                            <div class="col-md-6 fs-5 text-light fw-bold"> Salary Form</div>
+                            <div class="col-md-6 text-end">
+                                <button class="btn border-0" (click)=" addSalary= !addSalary">
+                                    <i class="fa-solid fa-xmark fs-4" style="color: #f4f5f6;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="" class="text-secondary  fw-bold p-2">Emp Name</label>
+                                    <select (change)="getEmpData()" name="employeeId" class="form-control"
+                                        [(ngModel)]="salaryObj.employeeId">
+
+                                        <option *ngFor="let items of  employeeArray" [value]="items.empId">
+                                            {{items.empName}}
+                                        </option>
+                                        <!-- <option value=""[(ngModel)]="clientObj.clientName">{{clientObj.clientName}}</option> -->
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="" class="text-secondary  fw-bold p-2">Date</label>
+                                    <input type="date" name="salaryDate" [(ngModel)]="salaryObj.salaryDate"
+                                        class="form-control" placeholder="salaryDate">
+                                </div>
+                                <div class="col-6 ">
+                                    <label for="" class="text-secondary  fw-bold p-2">Total Advance</label>
+                                    <input type="text" name="totalAdvance" [(ngModel)]="salaryObj.totalAdvance"
+                                        class="form-control" placeholder="totalAdvance">
+
+                                </div>
+
+                                <div class="col-6 ">
+                                    <label for="" class="text-secondary  fw-bold p-2">Present Days</label>
+                                    <input type="text" name="presentDays" [(ngModel)]="salaryObj.presentDays"
+                                        class="form-control" placeholder="presentDays">
+
+                                </div>
+                                <div class="col-6 ">
+                                    <label for="" class="text-secondary  fw-bold p-2">Salary Amount</label>
+                                    <input type="text" name="salaryAmount" (focus)="calculateSalary()"
+                                        [(ngModel)]="salaryObj.salaryAmount" class="form-control"
+                                        placeholder="salaryAmount">
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row text-centre p-2">
+
+
+                                <div class="col-12">
+                                    <div class="text-center mt-2">
+                                        <button class="btn btn-outline-success" *ngIf="salaryObj.salaryId==0"
+                                            (click)="createSalary()">
+
+                                            <div class="spinner-border spinner-border-sm" *ngIf="isLoader"></div>Save
+                                        </button>
+                                        <button class="btn btn-sm btn-warning" *ngIf="salaryObj.salaryId!==0"
+                                            (click)="updateSalary()">
+                                            <div class="spinner-border spinner-border-sm" *ngIf="isLoader"></div>Update
+                                        </button>
+                                        <button class="btn btn-outline-secondary mx-2"
+                                            (click)="resetSalary()">Reset</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

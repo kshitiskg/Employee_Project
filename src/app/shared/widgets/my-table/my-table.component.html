@@ -1,0 +1,23 @@
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-active">
+        <tr>
+            <th>Sr No</th>
+            <th *ngFor="let column of columnData">{{column.heading}}</th> 
+            <th *ngIf="isAction">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr  *ngFor="let item of gridData;let index= index">
+            <td>{{index+1}}</td>
+            <td *ngFor="let column of columnData"> {{item[column.field]}}   </td>
+            <td *ngIf="isAction" class="text-center">
+
+                <button class="btn btn-secondary btn-sm" (click)="edit(item)" >
+                    Edit</button>
+                <button class="btn btn-danger btn-sm mx-2"
+                (click)="delete(item)" >Delete</button>
+
+            </td>
+        </tr>
+    </tbody> 
+</table>

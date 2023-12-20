@@ -1,0 +1,54 @@
+ 
+<div class="container">
+    <div class="row">
+        <div class="col-3" *ngFor="let dashboard of dashboradArray">
+            <div class="card bg-light shadow border-0 mt-4">
+               <div class="card-body" >
+                <h4>Total employee</h4>
+                <h2>{{dashboard.totalEmployee}}</h2>
+               </div>
+            </div>
+            
+        </div>
+        <div class="col-3" *ngFor="let dashboard of dashboradArray">
+            <div class="card bg-light shadow border-0 mt-4">
+                <div class="card-body" >
+                 <h4>Total Salary Advance</h4>
+                 <h2>{{dashboard.totalAdvanceRecordCount}}</h2>
+                </div>
+             </div>
+        </div>
+        <div class="col-3" *ngFor="let dashboard of dashboradArray">
+            <div class="card bg-light shadow border-0 mt-4">
+                <div class="card-body" >
+                 <h4>Total Leaves </h4>
+                 <h2>{{dashboard.totalLeavesCount}}</h2>
+                </div>
+             </div>
+        </div>
+        <div class="col-3" *ngFor="let dashboard of dashboradArray">
+            <div class="card bg-light shadow border-0 mt-4">
+                <div class="card-body" >
+                 <h4>Total Salary </h4>
+                 <h2>{{dashboard.totalSalaryCount}}</h2>
+                </div>
+             </div>
+        </div>
+        <div class="col-3" *ngFor="let dashboard of dashboradArray">
+            <div class="card bg-light shadow border-0 mt-4">
+                <div class="card-body" >
+                 <h4>Today's Salary Amount</h4>
+                 <h2>{{dashboard.todaysAdvanceTotalAmount}}</h2>
+                </div>
+             </div>
+        </div>
+        <div class="col-3" *ngFor="let dashboard of dashboradArray">
+            <div class="card bg-light shadow border-0 mt-4">
+                <div class="card-body" >
+                 <h4>Today's  Leaves</h4>
+                 <h2>{{dashboard.todaysLeaves}}</h2>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,187 @@
+ 
+<div class="row bg-light bg-gradient p-5">
+    <div [ngClass]="addEmployee || editEmployee == true ? 'col-8' : 'col-12'">
+        <div class="card">
+            <div class="card-header bg-dark">
+                <div class="row">
+                    <div class="col-md-6 text-white fw-bold fs-4">All Employee</div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-sm btn-warning" (click)=" addEmployee = ! addEmployee">
+                            Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- <app-my-table [isAction]="true" (onEdit)="onEditEmp($event)" (onDelete)="onDeleteEmp($event)"  [columnData]="columnList" [gridData]="employeeArray" >
+                
+                </app-my-table> -->
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-active">
+                        <tr>
+                            <th>Sr No</th>
+                            <th>Name</th>
+                            <th>ContactNo</th>
+                            <th>Email</th>
+                            <th>City</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let employee of employeeArray; let sr=index" >
+                            <ng-container *ngIf="serachText == ''  || employee?.empName.toLowerCase().includes(serachText) || employee?.empContactNo.toLowerCase().includes(serachText) ">
+                                <td>{{sr+1}}</td>
+                                <td>{{employee.empName}}</td>
+                                <td>{{employee.empContactNo}}</td>
+                                <td>{{employee.empEmail}}</td>
+                                <td>{{employee.city}}</td>
+                                <td class="text-center">
+
+                                    <button class="btn btn-secondary btn-sm" (click)="editRecord(employee.empId)">
+                                        Edit</button>
+                                    <button class="btn btn-danger btn-sm mx-2"
+                                        (click)="onDelete(employee.empId)">Delete</button>
+
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-4 bg-light bg-gradient" *ngIf="addEmployee || editEmployee == true">
+        <!-- <div class="row"> -->
+        <form #employee="ngForm">
+            <div class="card">
+                <div class="card-header bg-dark">
+                    <div class="row">
+                        <div class="col-md-6 fs-4 text-light fw-bold">New Employee</div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-sm btn-danger" (click)=" addEmployee = !addEmployee">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Name</label>
+                            <input type="text" name="empName" [(ngModel)]="employeeObj.empName" #employeeName="ngModel"
+                                required minlength="4" class="form-control" placeholder="Name">
+                            <div class="text-danger" *ngIf="employeeName.touched || employeeName.dirty">
+                                <span *ngIf="employeeName.errors?.['required']"> Is Required</span>
+                                <span *ngIf="employeeName.errors?.['minlength']"> min 4 Required</span>
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Contact No</label>
+                            <input type="text" name="empContactNo" #employeeContact="ngModel"
+                                [(ngModel)]="employeeObj.empContactNo" class="form-control" placeholder="Contact No"
+                                required maxlength="10">
+                            <div class="text-danger" *ngIf="employeeContact.touched ||employeeContact.dirty">
+                                <span *ngIf="employeeContact.errors?.['required']"> Is Required</span>
+                                <span *ngIf="employeeContact.errors?.['maxlength']"> Max 10 Required</span>
+
+                            </div>
+                        </div>
+                        <div class="col-6 ">
+                            <label for="" class="text-secondary  fw-bold p-2">Alt Contact No</label>
+                            <input type="text" name="empAltContactNo" #employeeAltContact="ngModel"
+                                [(ngModel)]="employeeObj.empAltContactNo" class="form-control"
+                                placeholder=" Alt Contact No" required maxlength="10">
+                            <div class="text-danger" *ngIf="employeeAltContact.touched ||employeeAltContact.dirty">
+                                <span *ngIf="employeeAltContact.errors?.['required']"> Is Required</span>
+                                <span *ngIf="employeeAltContact.errors?.['maxlength']"> Max 10 Required</span>
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Email</label>
+                            <input type="text" name="empEmail" #employeeEmail="ngModel"
+                                [(ngModel)]="employeeObj.empEmail" class="form-control" placeholder="Enter Email"
+                                required>
+                            <div class="text-danger" *ngIf="employeeEmail.touched ||employeeEmail.dirty">
+                                <span *ngIf="employeeEmail.errors?.['required']"> Is Required</span>
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Address Line1</label>
+                            <input type="text" name="addressLine1" [(ngModel)]="employeeObj.addressLine1"
+                                class="form-control" placeholder="Enter Address Line1">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Address Line2</label>
+                            <input type="text" name="addressLine2" [(ngModel)]="employeeObj.addressLine2"
+                                class="form-control" placeholder="Enter Address Line2">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Pincode</label>
+                            <input type="text" name="pincode" [(ngModel)]="employeeObj.pincode" class="form-control"
+                                placeholder="Enter Pin code">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">City</label>
+                            <input type="text" name="city" [(ngModel)]="employeeObj.city" class="form-control"
+                                placeholder="Enter city">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">State</label>
+                            <input type="text" name="state" [(ngModel)]="employeeObj.state" class="form-control"
+                                placeholder="Enter State">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Nank Name</label>
+                            <input type="text" name="nankName" [(ngModel)]="employeeObj.bankName" class="form-control"
+                                placeholder="Enter Nank Name">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">IFSC</label>
+                            <input type="text" name="IFSC" [(ngModel)]="  employeeObj.IFSC" class="form-control"
+                                placeholder="Enter IFSC">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Account No</label>
+                            <input type="text" name="accountNo" [(ngModel)]="employeeObj.accountNo" class="form-control"
+                                placeholder="Enter accountNo">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">BankBranch</label>
+                            <input type="text" name="bankBranch" [(ngModel)]="employeeObj.bankBranch"
+                                class="form-control" placeholder="Enter bankBranch">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="text-secondary  fw-bold p-2">Salary</label>
+                            <input type="text" name="salary" [(ngModel)]="employeeObj.salary" class="form-control"
+                                placeholder="Enter Salary">
+                        </div>
+                    </div>
+                    <div class="row text-centre p-2">
+                        <div class="col-6">
+                            <button class="btn btn-sm btn-danger" (click)="resetEmployee()">Reset</button>
+                        </div>
+
+                        <div class="col-6">
+                            <button class="btn btn-sm btn-success" *ngIf="employeeObj.empId==0"
+                                (click)="createEmployee()">Save
+                            </button>
+                            <button class="btn btn-sm btn-warning" *ngIf=" employeeObj.empId !== 0"
+                                (click)="updateEmployee()">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
